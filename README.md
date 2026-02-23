@@ -1,239 +1,160 @@
-Portfolio Optimization using Modern Portfolio Theory (MPT)
+Portfolio Optimization with Rolling Strategy and Benchmark Comparison
 
-This project implements portfolio optimization using historical equity market data based on Modern Portfolio Theory (MPT).
+This project implements portfolio optimization using historical stock market data based on Modern Portfolio Theory (MPT).
 
-The objective is to:
+The objective is to construct optimal portfolios, evaluate their performance using backtesting and simulation, and compare results against a benchmark index using both static and rolling strategies.
 
-Identify optimal asset allocations that balance risk and return
+⸻
 
-Evaluate out-of-sample performance
+Project Overview
 
-Benchmark results against a market index
+This project includes:
+	•	Construction of optimal portfolios using historical returns
+	•	Efficient Frontier visualization
+	•	Identification of:
+	•	Minimum Variance Portfolio
+	•	Maximum Sharpe Ratio Portfolio
+	•	Out-of-sample backtesting
+	•	Monte Carlo simulation of future portfolio paths
+	•	Rolling (walk-forward) portfolio optimization
+	•	Performance comparison with S&P 500 benchmark
 
-Simulate future portfolio scenarios using Monte Carlo methods
+This project is built for learning and demonstration purposes in Quantitative Finance and Data Science.
 
-This project is intended for educational and demonstration purposes in quantitative finance and data science.
-
-Key Features
-Modern Portfolio Theory Implementation
-
-Efficient Frontier construction
-
-Minimum Variance Portfolio (MVP)
-
-Maximum Sharpe Ratio Portfolio (MSRP)
-
-Constrained optimization (no short selling)
-
-Rolling (Walk-Forward) Optimization
-
-To increase realism and robustness, the project implements rolling portfolio optimization:
-
-Uses rolling training windows
-
-Re-optimizes portfolio weights periodically
-
-Applies optimized weights to subsequent test windows
-
-Simulates systematic portfolio rebalancing
-
-This avoids static allocations and better reflects real-world portfolio management under evolving market conditions.
-
-Benchmarking Against Market Index
-
-Portfolios are benchmarked against the S&P 500 (^GSPC) to evaluate market-relative performance.
-
-Performance metrics compared include:
-
-Cumulative return
-
-Annualized return
-
-Volatility
-
-Sharpe ratio
-
-Maximum drawdown
-
-Comparison plots illustrate:
-
-Growth of $1 invested
-
-Risk-adjusted return comparison
-
-Drawdown analysis
-
-This ensures that performance is evaluated relative to a broad market benchmark rather than in isolation.
-
-Monte Carlo Simulation
-
-Thousands of simulated future return paths
-
-Portfolio value distribution analysis
-
-Downside risk estimation
-
-Expected performance under uncertainty
+⸻
 
 Methodology
+
 1. Data Collection
+	•	Historical stock data downloaded from Yahoo Finance
+	•	Assets used:
+	•	AAPL
+	•	MSFT
+	•	GOOGL
+	•	AMZN
+	•	META
+	•	Benchmark:
+	•	S&P 500 Index (^GSPC)
 
-Historical data is downloaded from Yahoo Finance.
+⸻
 
-Assets analyzed:
+2. Data Preprocessing
+	•	Daily closing prices converted to daily returns
+	•	Missing values removed
+	•	Covariance matrix computed for risk estimation
 
-AAPL
+⸻
 
-MSFT
+3. Portfolio Optimization (Static)
+	•	Random portfolios generated
+	•	Portfolio metrics computed:
+	•	Expected return
+	•	Volatility
+	•	Sharpe ratio
+	•	Optimization performed using SciPy (SLSQP)
+	•	Constraints:
+	•	Weights sum to 1
+	•	No short selling (weights between 0 and 1)
 
-GOOGL
+⸻
 
-AMZN
+4. Efficient Frontier Visualization
+	•	Risk vs return of random portfolios plotted
+	•	Highlighted portfolios:
+	•	Minimum Variance Portfolio
+	•	Maximum Sharpe Ratio Portfolio
 
-META
+⸻
 
-Benchmark:
+5. Backtesting (Out-of-Sample Evaluation)
+	•	Data split into training and testing periods
+	•	Optimized weights applied to unseen future data
+	•	Portfolio performance evaluated over time
+	•	Look-ahead bias avoided
 
-S&P 500 (^GSPC)
+⸻
 
-2. Portfolio Optimization
+6. Monte Carlo Simulation
+	•	Thousands of simulated return paths generated
+	•	Future portfolio value distribution estimated
+	•	Used to analyze risk and uncertainty
 
-Random portfolios are generated to explore the risk-return space.
+⸻
 
-Portfolio metrics computed:
+7. Rolling Optimization (Walk-Forward Strategy)
 
-Expected return
+Instead of keeping portfolio weights fixed, the strategy:
+	•	Uses a rolling historical window (e.g., 2 years)
+	•	Re-optimizes portfolio weights periodically
+	•	Applies new weights to the next trading period
+	•	Repeats this process over time
 
-Volatility
+This simulates how real-world asset managers dynamically adjust allocations based on recent market conditions.
 
-Sharpe ratio
+⸻
 
-Optimization is performed using SciPy (SLSQP) under the following constraints:
+8. Benchmark Comparison
 
-Portfolio weights sum to 1
+Portfolio performance is compared with the S&P 500 Index.
 
-0 ≤ weight ≤ 1 (no short selling)
+Metrics compared:
+	•	Total return
+	•	Annualized return
+	•	Volatility
+	•	Sharpe ratio
+	•	Equity curve comparison
 
-3. Efficient Frontier
+This allows evaluation of whether active optimization outperforms passive market exposure.
 
-The Efficient Frontier visualizes the risk-return trade-off and highlights:
+⸻
 
-Minimum Variance Portfolio
+Output
 
-Maximum Sharpe Ratio Portfolio
+The project generates:
+	•	Efficient Frontier plot
+	•	Backtesting equity curve
+	•	Monte Carlo simulation paths
+	•	Rolling optimization performance curve
+	•	Benchmark vs Portfolio comparison plot
 
-4. Backtesting (Out-of-Sample Evaluation)
-
-Data is split into training and testing periods
-
-Optimized weights from the training period are applied to unseen data
-
-Look-ahead bias is avoided
-
-5. Rolling Optimization (Walk-Forward Framework)
-
-Instead of optimizing once and holding static weights:
-
-Train on a historical window (e.g., 2–3 years)
-
-Optimize the portfolio
-
-Apply weights to the next testing window
-
-Roll the window forward
-
-Repeat
-
-This framework simulates periodic rebalancing and dynamic portfolio allocation.
-
-6. Benchmarking
-
-The optimized portfolio is compared against the S&P 500.
-
-Outputs include:
-
-Cumulative return comparison chart
-
-Drawdown comparison
-
-Sharpe ratio comparison table
-
-This highlights whether the strategy provides superior risk-adjusted returns relative to the broader market.
-
-7. Monte Carlo Simulation
-
-Future returns are simulated using random sampling:
-
-Thousands of potential return paths
-
-Distribution of final portfolio values
-
-Confidence intervals
-
-Downside risk estimation
-
-Project Structure
-portfolio-optimization/
-│
-├── data/                      # Historical stock and benchmark data
-├── notebooks/                 # Jupyter notebooks for exploration
-├── src/
-│   ├── data_loader.py
-│   ├── optimizer.py
-│   ├── backtest.py
-│   ├── benchmark.py
-│   ├── rolling_optimization.py
-│   └── monte_carlo.py
-│
-├── results/                   # Plots and outputs
-├── requirements.txt
-└── README.md
-Example Outputs
-
-Efficient Frontier plot
-
-Optimal portfolio weights (MVP and MSRP)
-
-Rolling backtest performance chart
-
-Portfolio vs benchmark comparison
-
-Monte Carlo simulation distributions
-
-Summary performance statistics
-
-Future Enhancements
-
-Transaction cost modeling
-
-Portfolio turnover analysis
-
-Multiple benchmark comparison
-
-Sector-level diversification
-
-Value at Risk (VaR) and Conditional VaR
-
-Regime-switching models
+⸻
 
 Tools and Libraries
-
-Python
-
-NumPy
-
-Pandas
-
-Matplotlib
-
-SciPy
-
-yFinance
+	•	Python
+	•	NumPy
+	•	Pandas
+	•	Matplotlib
+	•	SciPy
+	•	yFinance
 
 All dependencies are listed in requirements.txt.
+
+
+portfolio-optimization/
+├── optimization.py
+├── backtesting.py
+├── monte_carlo.py
+├── rolling_optimization.py
+├── benchmark_comparison.py
+├── requirements.txt
+├── README.md
+├── plots/
+│   ├── efficient_frontier.png
+│   ├── backtesting_equity_curve.png
+│   ├── monte_carlo_simulation.png
+│   ├── rolling_optimization.png
+│   └── benchmark_comparison.png
+
+Future Enhancements
+	•	Transaction cost modeling
+	•	Portfolio turnover analysis
+	•	Risk metrics (VaR, CVaR)
+	•	Regime detection
+	•	Factor-based allocation
+	•	Interactive dashboard
+
+⸻
 
 Disclaimer
 
 This project is for educational purposes only and does not constitute financial or investment advice.
-
-If you would like, I can further refine this into a research-style README suitable for quantitative research roles or a concise recruiter-focused version optimized for GitHub presentation.
